@@ -74,16 +74,37 @@ public class Simulation {
         }
         System.out.println("Set " + infectedSet + " initially infected entities.");
     }
-    
+
     /**
      * Starts the main simulation loop.
      */
-    public void start() {}
+    public void start() {
+        System.out.println("Starting simulation...");
+
+        while(shouldSimulationContinue()) {
+            currentTurn++;
+            System.out.println("\n--- Turn: " + currentTurn + " ---");
+            executeTurn();
+            displaySimulationState();
+        }
+        displayFinalStatistics();
+    }
 
     /**
      * Executes all steps for a single simulation turn.
      */
-    private void executeTurn() {}
+    private void executeTurn() {
+        // Entity movement
+        for(Entity entity : entityList) entity.move(board);
+
+        // Disease spread
+        List<Entity> entityListCopy = new ArrayList<>(entityList);
+        for(Entity infectingEntity : entityListCopy) infectingEntity.tryToInfectOthers(entityList, board);
+
+        // Update of the state of entities
+        for(Entity entity : entityList) entity.updateDiseaseState();
+
+    }
 
     /**
      * Checks if the simulation should continue.
@@ -93,7 +114,24 @@ public class Simulation {
      * @return true if the simulation should continue, false otherwise.
      */
     private boolean shouldSimulationContinue() {
-         return false;
+        long infectedEntitiesCount = entityList.stream()
+                .filter(entity -> entity.getHealthStatus() == HealthStatus.INFECTED)
+                .count();
+        long aliveEntitiesCount = entityList.stream()
+                .filter(entity -> entity.getHealthStatus() != HealthStatus.DECEASED)
+                .count();
+
+        // During the turn 0 infection state of entities is not yet changed
+        if(infectedEntitiesCount == 0 && currentTurn > 0) {
+            System.out.println("No infected entities left. Epidemic ends.");
+            return false;
+        }
+
+        if(aliveEntitiesCount == 0) {
+            System.out.println("No alive entities left. Epidemic ends.");
+            return false;
+        }
+        return true;
     }
     void displaySimulationState() {}
     void displayFinalStatistics() {}
