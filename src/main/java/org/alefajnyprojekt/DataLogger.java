@@ -23,6 +23,7 @@ public class DataLogger {
             if(file.createNewFile()) System.out.printf("Created new file at %s", file.getPath());
             writer = new FileWriter(file);
             bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write("turnNumber, healthyCount, recoveredCount, infectedCount, deceasedCount\n");
         } catch (IOException e) {
             System.out.println("ERROR: Could not initiate data logger module");
             System.exit(2);
@@ -32,14 +33,14 @@ public class DataLogger {
     /**
      * Method creating a record in a csv file
      * @param turnNumber Field representing a current turn
-     * @param healthyCount Field representing the count of healthy entities in a simulation
-     * @param recoveredCount Field representing the count of healthy entities in a simulation
-     * @param deceasedCount Field representing the count of deceased entities in a simulation
-     * @param totalAlive Field representing the count of all alive entities in a turn
+     * @param healthyCount Field representing the count of healthy entities in a turn
+     * @param recoveredCount Field representing the count of healthy entities in a turn
+     * @param infectedCount Field representing the count of infected entities in a turn
+     * @param deceasedCount Field representing the count of deceased entities in a turn
      */
     public void saveTurnState(long turnNumber, long healthyCount, long recoveredCount,
-                              long deceasedCount, long totalAlive) {
-        String payload = turnNumber + ", " + healthyCount + ", " +  recoveredCount + ", " + deceasedCount + ", " + totalAlive + "\n";
+                              long infectedCount, long deceasedCount) {
+        String payload = turnNumber + ", " + healthyCount + ", " +  recoveredCount + ", " + infectedCount + ", " + deceasedCount + "\n";
         try {
             bufferedWriter.write(payload);
         } catch (IOException e) {
