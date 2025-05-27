@@ -26,7 +26,7 @@ public class Pet extends Animal {
      @Override
     protected int determineTurnsForStateChangeAfterInfection() {
         // Pets are sick for a duration similar to humans, e.g., 5-10 days (turns)
-        return ThreadLocalRandom.current().nextInt(5, 11);
+        return ThreadLocalRandom.current().nextInt(7, 24);
     }
 
     @Override
