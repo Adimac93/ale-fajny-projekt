@@ -1,0 +1,9 @@
+{
+  "boardWidth": 20,
+  "boardHeight": 20,
+  "numHumans": 50,
+  "numRats": 10,
+  "numPets": 5,
+  "initiallyInfected": 3,
+  "maxTurns": 100
+}
