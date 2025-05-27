@@ -5,6 +5,7 @@ import org.alefajnyprojekt.enums.HealthStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -78,6 +79,7 @@ public class Simulation {
     /**
      * Starts the main simulation loop.
      */
+    @SuppressWarnings("BusyWait")
     public void start() {
         System.out.println("Starting simulation...");
 
@@ -86,6 +88,15 @@ public class Simulation {
             System.out.println("\n--- Turn: " + currentTurn + " ---");
             executeTurn();
             displaySimulationState();
+
+            try {
+                Thread.sleep(200); // Delay for observation
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Simulation interrupted.");
+                break;
+            }
+
         }
         displayFinalStatistics();
     }
@@ -133,6 +144,42 @@ public class Simulation {
         }
         return true;
     }
-    void displaySimulationState() {}
-    void displayFinalStatistics() {}
+
+    /**
+     * Prints basic statistics about a current state of a simulation
+     */
+    public void displaySimulationState() {
+        long healthyCount = entityList.stream().filter(entity -> entity.getHealthStatus() == HealthStatus.HEALTHY).count();
+        long infectedCount = entityList.stream().filter( entity -> entity.getHealthStatus() == HealthStatus.INFECTED).count();
+        long recoveredCount = entityList.stream().filter(entity -> entity.getHealthStatus() == HealthStatus.RECOVERED).count();
+        long deceasedCount = entityList.stream().filter( entity -> entity.getHealthStatus() == HealthStatus.DECEASED).count();
+
+        System.out.println("  Healthy: " + healthyCount);
+        System.out.println("  Infected: " + infectedCount);
+        System.out.println("  Recovered: " + recoveredCount);
+        System.out.println("  Deceased: " + deceasedCount);
+        System.out.println("  Total alive: " + (healthyCount + infectedCount + recoveredCount));
+    }
+
+    /**
+     * Prints detailed summary of a final state of a simulation
+     */
+    public void displayFinalStatistics() {
+        System.out.println("Final statistics after " + currentTurn + " turns:");
+        displaySimulationState(); // state of a simulation after a last turn
+
+        System.out.println("Breakdown by type:");
+        entityList.stream()
+                .collect(Collectors.groupingBy(Entity::getEntityType, Collectors.counting()))
+                .forEach((type, count) -> System.out.println("  " + type + ": " + count + " (initially)"));
+
+        System.out.println("\nBreakdown by type and health status:");
+        entityList.stream()
+                .collect(Collectors.groupingBy(Entity::getEntityType,
+                        Collectors.groupingBy(Entity::getHealthStatus, Collectors.counting())))
+                .forEach((type, statusStats) -> {
+                    System.out.println("  " + type + ":");
+                    statusStats.forEach((status, count) -> System.out.println("    - " + status + ": " + count));
+                });
+    }
 }
