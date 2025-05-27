@@ -23,7 +23,7 @@ public class DataLogger {
             if(file.createNewFile()) System.out.printf("Created new file at %s", file.getPath());
             writer = new FileWriter(file);
             bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write("turnNumber, healthyCount, recoveredCount, infectedCount, deceasedCount\n");
+            bufferedWriter.write("turnNumber,healthyCount,recoveredCount,infectedCount,deceasedCount\n");
         } catch (IOException e) {
             System.out.println("ERROR: Could not initiate data logger module");
             System.exit(2);
