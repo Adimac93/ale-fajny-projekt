@@ -19,6 +19,7 @@ public class Simulation {
     private final EntityFactory entityFactory;
     private int currentTurn;
     private final int maxTurns;
+    private DataLogger logger;
 
     /**
      * Simulation constructor.
@@ -39,6 +40,8 @@ public class Simulation {
          this.entityList = new ArrayList<>();
          this.currentTurn = 0;
          this.maxTurns = maxTurns;
+
+         logger = new DataLogger();
 
          initializeEntities(numHumans, numRats, numPets);
          setInitialInfected(initiallyInfected);
@@ -99,6 +102,7 @@ public class Simulation {
 
         }
         displayFinalStatistics();
+        logger.saveResults();
     }
 
     /**
@@ -155,6 +159,8 @@ public class Simulation {
         long infectedCount = entityList.stream().filter( entity -> entity.getHealthStatus() == HealthStatus.INFECTED).count();
         long recoveredCount = entityList.stream().filter(entity -> entity.getHealthStatus() == HealthStatus.RECOVERED).count();
         long deceasedCount = entityList.stream().filter( entity -> entity.getHealthStatus() == HealthStatus.DECEASED).count();
+
+        logger.saveTurnState(currentTurn, healthyCount, recoveredCount, infectedCount, deceasedCount);
 
         System.out.println("  Healthy: " + healthyCount);
         System.out.println("  Infected: " + infectedCount);
