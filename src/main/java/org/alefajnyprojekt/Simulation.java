@@ -125,6 +125,8 @@ public class Simulation {
      * @return true if the simulation should continue, false otherwise.
      */
     private boolean shouldSimulationContinue() {
+        if(currentTurn >= maxTurns) return false;
+
         long infectedEntitiesCount = entityList.stream()
                 .filter(entity -> entity.getHealthStatus() == HealthStatus.INFECTED)
                 .count();
