@@ -37,7 +37,7 @@ public class Human extends Entity {
     @Override
     protected int determineTurnsForStateChangeAfterInfection() {
         // Humans are sick for e.g., 7 to 14 days (turns)
-        return ThreadLocalRandom.current().nextInt(7, 15);
+        return ThreadLocalRandom.current().nextInt(14, 31);
     }
 
     @Override
