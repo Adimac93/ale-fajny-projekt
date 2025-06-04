@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.alefajnyprojekt"},{"l":"org.alefajnyprojekt.entities"},{"l":"org.alefajnyprojekt.enums"}];updateSearchResults();
