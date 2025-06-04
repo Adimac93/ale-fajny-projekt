@@ -1,31 +1,24 @@
 package org.alefajnyprojekt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Initializing disease spread simulator...");
-
-        try {
-            // Get initials parameters from JSON file
-            Config config = new ObjectMapper().readValue(new File("config.json"), Config.class);
-
-            // Create and run the simulation
-            Simulation simulation = new Simulation(
-                    config.boardWidth, config.boardHeight,
-                    config.numHumans, config.numRats, config.numPets,
-                    config.initiallyInfected, config.maxTurns
-            );
-
-            simulation.start();
-        } catch (Exception e) {
-            System.err.println("Error loading configuration: " + e.getMessage());
-            return;
-        }
-
-        System.out.println("Program execution finished.");
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Config config = new ObjectMapper().readValue(new File("config.json"), Config.class);
+                Simulation simulation = new Simulation(
+                        config.boardWidth, config.boardHeight,
+                        config.numHumans, config.numRats, config.numPets,
+                        config.initiallyInfected, config.maxTurns
+                );
+                new Thread(() -> simulation.start()).start();
+            } catch (Exception e) {
+                System.err.println("Error loading configuration: " + e.getMessage());
+            }
+        });
     }
 
     static class Config {
