@@ -55,10 +55,12 @@ public class Simulation {
      * Runs the simulation in a separate thread.
      * Continuously executes turns until the simulation ends.
      */
+    @SuppressWarnings("BusyWait")
     private void runSimulation() {
         while(running && shouldSimulationContinue()) {
             currentTurn++;
             executeTurn();
+            generateStatsString();
 
             SwingUtilities.invokeLater(() -> window.updateDisplay());
 
@@ -123,8 +125,6 @@ public class Simulation {
         while(shouldSimulationContinue()) {
             currentTurn++;
             executeTurn();
-            generateStatsString();
-
             // Update UI in EDT
             SwingUtilities.invokeLater(() -> window.updateDisplay());
 

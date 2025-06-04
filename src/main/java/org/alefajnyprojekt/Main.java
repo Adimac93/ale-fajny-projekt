@@ -14,7 +14,6 @@ public class Main {
                         config.numHumans, config.numRats, config.numPets,
                         config.initiallyInfected, config.maxTurns
                 );
-                new Thread(() -> simulation.start()).start();
             } catch (Exception e) {
                 System.err.println("Error loading configuration: " + e.getMessage());
             }
