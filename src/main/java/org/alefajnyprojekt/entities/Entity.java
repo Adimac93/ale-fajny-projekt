@@ -48,11 +48,6 @@ public abstract class Entity {
     public Position getPosition() { return position; }
     public HealthStatus getHealthStatus() { return healthStatus; }
     public double getImmunity() { return immunity; }
-    public int getMovementRange() { return movementRange; }
-    public int getInfectionRange() { return infectionRange; }
-    public double getChanceToInfectOthers() { return chanceToInfectOthers; }
-    public int getTurnsUntilStateChange() { return turnsUntilStateChange; }
-
 
     public void setPosition(Position position) { this.position = position; }
 
@@ -79,7 +74,7 @@ public abstract class Entity {
         // Setting time until state change should be more specific to the entity type
         // e.g., Human 7-14 days, Rat 3-5 days
         this.turnsUntilStateChange = determineTurnsForStateChangeAfterInfection();
-        System.out.println(this.getEntityType() + " " + id + " became infected. Turns until state change: " + this.turnsUntilStateChange);
+        //System.out.println(this.getEntityType() + " " + id + " became infected. Turns until state change: " + this.turnsUntilStateChange);
     }
 
     /**
@@ -146,7 +141,7 @@ public abstract class Entity {
                 if (random.nextDouble() < this.chanceToInfectOthers) {
                     // The other entity attempts to get infected (considering its own immunity)
                     if (otherEntity.tryToGetInfected()) {
-                         System.out.println(this.getEntityType() + " " + id + " (at " + this.position +") infected " + otherEntity.getEntityType() + " " + otherEntity.getId() + " (at " + otherEntity.getPosition() + ")");
+                         //System.out.println(this.getEntityType() + " " + id + " (at " + this.position +") infected " + otherEntity.getEntityType() + " " + otherEntity.getId() + " (at " + otherEntity.getPosition() + ")");
                     }
                 }
             }
@@ -168,10 +163,10 @@ public abstract class Entity {
                     this.healthStatus = HealthStatus.RECOVERED;
                     // Optionally: increase immunity after recovery
                     this.immunity = Math.min(1.0, this.immunity + 0.5); // E.g., increase immunity
-                    System.out.println(this.getEntityType() + " " + id + " has recovered.");
+                    //System.out.println(this.getEntityType() + " " + id + " has recovered.");
                 } else {
                     this.healthStatus = HealthStatus.DECEASED;
-                    System.out.println(this.getEntityType() + " " + id + " has died from the disease.");
+                    //System.out.println(this.getEntityType() + " " + id + " has died from the disease.");
                 }
             }
         }

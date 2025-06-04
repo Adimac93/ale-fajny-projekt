@@ -22,6 +22,11 @@ public enum Direction {
     private static final Random random = new Random();
     private static final Direction[] DIRECTIONS = values();
 
+    /**
+     * Constructor for Direction enum.
+     * @param deltaX Change in X coordinate for this direction.
+     * @param deltaY Change in Y coordinate for this direction.
+     */
     Direction(int deltaX, int deltaY) {
         this.deltaX = deltaX;
         this.deltaY = deltaY;
